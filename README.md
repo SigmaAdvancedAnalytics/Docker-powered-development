@@ -7,7 +7,7 @@ POC for using EMR to schedule spark jobs
 `docker build --file dev-dockerfile --tag dev-environment .`
 
 ## Lightweight data container for external access
-`docker create --name persistent-data -v C:\Users\talld\Documents\_core\projects\EMR-test\:/persistent_data tianon/true /bin/true`
+`docker create --name storage-vol -v C:\Users\talld\Documents\_core\projects:/home/linked_data tianon/true /bin/true`
 
 ## Mount data container to new container
-`docker run -ti --name EMR-test --volumes-from persistent-data -p 8888:8888 dev-environment /bin/sh`
+`docker run -it --name jupyter-container --volumes-from storage-vol -p 8888:8888 dev-environment`
