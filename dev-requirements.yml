@@ -1,6 +1,8 @@
 name: docker-env
 dependencies:
 - python=3.5
+- pyspark
+- boto3
 - nomkl
 - ipywidgets=5.2*
 - numpy=1.12*
@@ -28,14 +30,6 @@ dependencies:
 - datashader=0.4*
 - Flask=0.11.1
 - psycopg2=2.6.2
-- Flask-Login=0.4.0
-- Flask-Script=2.0.5
-- Flask-SQLAlchemy=2.1
-- Flask-Testing=0.6.1
-- Flask-WTF=0.14.2
-- uwsgi
 - xlrd
 - pip:
   - https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.0.0-cp35-cp35m-linux_x86_64.whl
-  - Flask-Bootstrap==3.3.7
-  - Flask-Migrate==2.0.2

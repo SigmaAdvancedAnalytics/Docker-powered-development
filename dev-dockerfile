@@ -36,21 +36,20 @@ ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 ENV DEV_USER jeb
 ENV NB_UID 1000
-ENV HOME /home/$DEV_USER
+ENV HOME /home
 ENV ENV_NAME docker-env
-ENV STARTSCRIPT /opt/start.sh
+ENV STARTSCRIPT /home/start.sh
+ENV APP_ACTIVATE "jupyter notebook"
 
 # Create jeb user
 RUN useradd -m -s /bin/bash -N -u $NB_UID $DEV_USER && \
     mkdir -p $CONDA_DIR && \
     chown $DEV_USER $CONDA_DIR
-    
-USER $DEV_USER
 
 # Setup jeb home directory
-RUN mkdir /home/$DEV_USER/work && \
-    mkdir /home/$DEV_USER/.jupyter && \
-    echo "cacert=/etc/ssl/certs/ca-certificates.crt" > /home/$DEV_USER/.curlrc
+RUN mkdir /home/config && \
+    mkdir /home/config/.jupyter && \
+    echo "cacert=/etc/ssl/certs/ca-certificates.crt" > /home/config/.curlrc
 
 # Miniconda installation
 RUN cd /tmp && \
@@ -68,31 +67,26 @@ RUN conda install -c conda-forge --quiet --yes \
     'jupyterhub=0.7.2' \
     && conda clean -tipsy
  
-# Add shortcuts to distinguish python3 pip env
+# Upgrade pip
 RUN pip install --upgrade pip
+
+WORKDIR /home
     
 # Install Python 3 packages
-COPY dev-requirements.yml /home/$DEV_USER/code/dev-requirements.yml
-WORKDIR /home/$DEV_USER/code
+RUN chown -R $DEV_USER:users /home
+COPY dev-requirements.yml jupyter_config.py ./
 RUN conda env create -f dev-requirements.yml -n $ENV_NAME
 
-WORKDIR /home/$DEV_USER
-
-USER root
-
-# Add local files as late as possible to avoid cache busting
-COPY jupyter_notebook_config.py /home/$DEV_USER/.jupyter/
-RUN chown -R $DEV_USER:users /home/$DEV_USER/.jupyter
-COPY . /home/$DEV_USER/code
-WORKDIR /home/$DEV_USER/code
-
-# Script: Activate condaenv and launch application
-RUN echo "#!/bin/bash" > $STARTSCRIPT && \
+# Script: Activate conda env and launch application
+RUN echo "#!/bin/bash" >> $STARTSCRIPT && \
 	echo "source activate $ENV_NAME" >> $STARTSCRIPT && \
+	echo "$APP_ACTIVATE" >> $STARTSCRIPT && \
 	chmod +x $STARTSCRIPT
 
 # Configure container startup
-ENTRYPOINT ["tini", "--"]
-# CMD ["/opt/start.sh"]
+ENTRYPOINT ["/usr/local/bin/tini", "--"]
+CMD ["/bin/sh","start.sh"]
 
 USER $DEV_USER
+
+
