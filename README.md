@@ -11,3 +11,6 @@ POC for using EMR to schedule spark jobs
 
 ## Mount data container to new container
 `docker run -it --name jupyter-container --volumes-from storage-vol -p 8888:8888 dev-environment`
+
+## SSH into EC2 instance
+SSH -i [keyfile] ec2-user@[address]
