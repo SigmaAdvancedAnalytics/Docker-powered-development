@@ -1,6 +1,15 @@
-# EMR-test
-POC for using EMR to schedule spark jobs
+# Docker powered development
+Development and production Docker images for rapid analytics prototyping (Python focused but easily extensible to any [Jupyter Kernel]<https://github.com/jupyter/jupyter/wiki/Jupyter-kernels>  
+There are two docker images contained in this repository:  
+[dev-environment] - A hosted jupyter notebook linked to the host-os via a storage container
+and [prod-environment] 
+Only requirement is Docker and a decent internet connection
 
+# Quickstart
+### Development environment
+#### Open a shell and navigate to 
+
+# Contributing to 
 ## List python package dependincies in .yml file
 
 ## Build development image
