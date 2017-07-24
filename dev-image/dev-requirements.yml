@@ -1,6 +1,5 @@
 name: docker-env
 dependencies:
-- python=3.5
 - pyspark
 - boto3
 - nomkl
