@@ -1,6 +1,7 @@
 # Docker powered development
 Development and production Docker images for rapid analytics prototyping (Python focused but easily extensible to any [Jupyter Kernel](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels))  
 
+**To be updated, below are merely placeholder notes**
 
 ## Quickstart 
 To create and run a Jupyter notebook container with Tensorflow, Pyspark and this suite of PY3 packages. 
