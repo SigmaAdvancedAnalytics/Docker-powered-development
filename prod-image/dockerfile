@@ -1,0 +1,34 @@
+FROM base-image
+
+MAINTAINER MAINTAINER Joshua Barber "j.barber501@gmail.com"
+
+USER root
+
+######## ENVIRONMENT VARIABLES ########
+ENV HOME_DIR /home/jrb
+ENV CONFIG_DIR $HOME_DIR/dockerize
+ENV CONFIG_YML environment.yml
+ENV STARTSCRIPT $CONFIG_DIR/start.sh
+ENV ENV_NAME docker-env
+ENV PROD_USER jrb
+ENV PB_UID 1000
+#######################################
+
+# Create jrb user
+RUN useradd -m -s /bin/bash -N -u $PB_UID $PROD_USER && \
+    mkdir -p $HOME_DIR/ && \
+    chown -R $PROD_USER:users $HOME_DIR
+
+# Setup user directory
+RUN chown -R $DEV_USER:users /home
+WORKDIR $HOME_DIR
+COPY . ./
+    
+# Install Python 3 packages
+RUN conda env create -f $CONFIG_YML -n $ENV_NAME
+
+# Configure container startup
+ENTRYPOINT ["/usr/local/bin/tini", "--"]
+CMD ["/bin/sh","./dockerize/start.sh"]
+
+USER $PROD_USER
