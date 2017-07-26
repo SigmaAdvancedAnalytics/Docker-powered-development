@@ -1,10 +1,17 @@
 # Docker powered development
-Development and production Docker images for rapid analytics prototyping (Python focused but easily extensible to any [Jupyter Kernel](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels) )  
+Development and production Docker images for rapid analytics prototyping (Python focused but easily extensible to any [Jupyter Kernel](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels))  
 
 
-## Quickstart - [dev-environment]
-* Create a volume (directory) linked to the Host OS:  
-`docker create --name storage-vol -v C:\Users\path\to\folder:/home/stored_data tianon/true /bin/true`  
+## Quickstart 
+To create and run a Jupyter notebook container with Tensorflow, Pyspark and this suite of PY3 packages. 
+_note: first time this is run, it will download ~4GB of images_
+`docker run -t -p 8888:8888 joshuabarber/dev-pyspark-image`
+
+Files can be input and output from the above container using Jupyter Terminal and Git.
+To save and open files directly from your OS, use this instead:
+
+* Create a volume (directory) linked to the Host OS: 
+`docker create --name storage-vol -v C:\Users\path\to\folder:/home/stored_data tianon/true /bin/true` 
 
 * Setup a development jupyter hub on localhost with link to Host OS:  
 `docker run -it --name jupyter-container --volumes-from storage-vol -p 80:8888 dev-environment`  
