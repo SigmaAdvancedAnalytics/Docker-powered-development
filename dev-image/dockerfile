@@ -1,0 +1,39 @@
+FROM base-image
+MAINTAINER Joshua Barber "j.barber501@gmail.com"
+
+USER root
+
+ENV STARTSCRIPT /home/config/start.sh
+ENV ENV_NAME docker-env
+ENV APP_ACTIVATE "jupyter notebook"
+
+
+# Setup home directory
+RUN mkdir /home/config && \
+    mkdir /home/config/.jupyter && \
+    echo "cacert=/etc/ssl/certs/ca-certificates.crt" > /home/config/.curlrc
+
+# Install Jupyter Notebook and Hub
+RUN conda install -c conda-forge --quiet --yes \
+    'notebook=4.3*' \
+    'jupyterhub=0.7.2' \
+    && conda clean -tipsy
+ 
+# Upgrade pip
+RUN pip install --upgrade pip
+
+WORKDIR /home
+    
+# Install Python 3 packages
+COPY python_packages.yml jupyter_config.py /home/config/
+RUN conda env create -n $ENV_NAME -f /home/config/python_packages.yml
+
+# Script: Activate conda env and launch application
+RUN echo "#!/bin/bash" >> $STARTSCRIPT && \
+	echo "source activate $ENV_NAME" >> $STARTSCRIPT && \
+	echo "$APP_ACTIVATE --config_file /home/config" >> $STARTSCRIPT && \
+	chmod +x $STARTSCRIPT
+
+# Configure container startup
+ENTRYPOINT ["/usr/local/bin/tini", "--"]
+CMD ["/bin/sh","/home/config/start.sh"]

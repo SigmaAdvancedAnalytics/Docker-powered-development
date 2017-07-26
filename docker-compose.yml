@@ -1,0 +1,11 @@
+version: "3.2"
+services:  
+  sapsucker:
+    build: .
+    command: python /home/query-builder.py
+    env_file: 
+        - ./configuration.env
+    volumes:
+        - ./nwrfcsdk/:/usr/sap/nwrfcsdk/
+        - ./:/home/
+
