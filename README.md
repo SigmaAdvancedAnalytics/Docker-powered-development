@@ -11,18 +11,18 @@ _note: first time this is run, it will download ~4GB of images_
 Files can be input and output from the above container using Jupyter Terminal and Git.
 To save and open files directly from your OS, use this instead:
 
-* Create a volume (directory) linked to the Host OS: 
+* Create a volume (directory) linked to the Host OS:  
 `docker create --name storage-vol -v C:\Users\path\to\folder:/home/stored_data tianon/true /bin/true` 
 
 * Setup a development jupyter hub on localhost with link to Host OS:  
-`docker run -it --name jupyter-container --volumes-from storage-vol -p 80:8888 dev-environment`  
+`docker run -it --name jupyter-container --volumes-from storage-vol -p 8888:8888 dev-pyspark-image`  
 
 * Setup a development bash terminal for python scripting with link to Host OS:  
-`docker run -it --name bash-container --volumes-from storage-vol dev-environment /bin/bash`
+`docker run -it --name bash-container --volumes-from storage-vol dev-pyspark-image /bin/bash`
 
 ## Quickstart - [prod-environment]  
 * Build a custom docker image with your python project (replace [] with your image name and version):    
-`docker build --file dev-dockerfile --tag dev-environment .    #run this from inside the `  
+`docker build --file dev-dockerfile --tag prod-image .    #run this from inside the `  
 
 
 
