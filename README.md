@@ -1,3 +1,6 @@
+# Currently Deprecated  
+### The anaconda team are just [getting too good](https://github.com/jupyter/docker-stacks). In future, this will become a 'simple setup' repo for their prebaked docker images.
+ 
 # Docker powered development
 Development and production Docker images for rapid analytics prototyping (Python focused but easily extensible to any [Jupyter Kernel](https://github.com/jupyter/jupyter/wiki/Jupyter-kernels))  
 
